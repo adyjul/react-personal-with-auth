@@ -3,24 +3,15 @@ import { Link,useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { Loading } from '../../component/index.js';
 import {register} from '../../utils/config/network.jsx';
-
-
-
-function useInput(defaultValue) {
-    const [value, setValue] = useState(defaultValue);
-    const handleValueChange = (event) => setValue(event.target.value);
-    return [value, handleValueChange];
-}
+import { useInput } from '../../component/index.js';
 
 const Register = () => {
     const navigate = useNavigate();
     const [name, onName] = useInput('');
-    const [loading,onLoading] = useState(false);
+    const [isloading,onIsLoading] = useState(false);
     const [email, onEmailChange] = useInput('');
     const [password, onPassword] = useInput('');
     const [confirmPassword, onConfirmPassword] = useInput('');
-
-
 
     async function registerUser(){
         
@@ -31,9 +22,9 @@ const Register = () => {
                 text : 'Password tidak sama'
             })
         }else{            
-            onLoading(true);
+            onIsLoading(true);
             const data = await register({name,email,password});
-            onLoading(false)
+            onIsLoading(false)
             !data.error ? navigate('/login') : navigate('/register');
         }
 
@@ -42,7 +33,7 @@ const Register = () => {
 
     return(
         <>
-            {loading ?  <Loading/> : <div></div>}
+            {isloading ?  <Loading/> : <div></div>}
             <section className="regsiter-page">
                 <h2>Isi form untuk mendaftar akun.</h2>
                 <div className="input-register">

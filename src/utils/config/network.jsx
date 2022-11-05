@@ -33,7 +33,11 @@ async function login({ email, password }) {
     const responseJson = await response.json();
 
     if (responseJson.status !== 'success') {
-        alert(responseJson.message);
+        Swal.fire({
+            title: `${responseJson.status}!`,
+            text: responseJson.message,
+            icon: 'error',            
+        })
         return { error: true, data: null };
     }
 
@@ -92,6 +96,11 @@ async function addNote({ title, body }) {
     const responseJson = await response.json();
 
     if (responseJson.status !== 'success') {
+        Swal.fire({
+            title: `${responseJson.status}!`,
+            text: responseJson.message,
+            icon: 'error',            
+        })
         return { error: true, data: null };
     }
 
@@ -173,6 +182,16 @@ async function deleteNote(id) {
     return { error: false, data: responseJson.data };
 }
 
+const showFormattedDate = (date) => {
+    const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    };
+    return new Date(date).toLocaleDateString('id-ID', options);
+};
+
 export {
     getAccessToken,
     putAccessToken,
@@ -186,4 +205,5 @@ export {
     archiveNote,
     unarchiveNote,
     deleteNote,
+    showFormattedDate
 };
