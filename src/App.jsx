@@ -1,10 +1,10 @@
 import { Component } from "react";
-import {Header,Loading} from './component/index';
+import {Header} from './component/index';
 import { Login,NotFound,Register,Dashboard,Tambah,DetailCard } from "./pages";
-import {putAccessToken,getUserLogged,getAccessToken, getActiveNotes} from './utils/config/network'
+import {putAccessToken,getUserLogged,getAccessToken} from './utils/config/network'
 import { Routes, Route } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import Arsip from "./pages/arsip/Arsip";
+import GLOBAL_VALUE from "./ValueContext";
 
 class App extends Component{
     constructor(props){
@@ -14,6 +14,7 @@ class App extends Component{
             inLogin : getAccessToken(),            
         }
         this.isloginSuccess = this.isloginSuccess.bind(this);
+        this.logout = this.logout.bind(this);
     }
 
     async getOnUserLogged(access){
@@ -26,14 +27,16 @@ class App extends Component{
         })        
     }
 
+    logout(){
+        this.setState({
+            isAuthUser : null
+        });
+        putAccessToken('');
+    }
+
     async componentDidMount(){       
         let access = getAccessToken();
-        let getUser =  await this.getOnUserLogged(access);        
-        this.setState(() => {
-            return{
-                initializing: false,                
-            }
-        })        
+        await this.getOnUserLogged(access);                    
     }
 
     async isloginSuccess({access}){                        
@@ -43,25 +46,32 @@ class App extends Component{
 
 
     render(){    
-        // if (this.state.initializing) {
-        //    return null;
-        // }            
+                  
         if( this.state.isAuthUser === null ){ 
-            return(                
-            <div className="app-container" data-theme="light">
-                <Header access={false} dataUser={this.state.isAuthUser}/>    
-                <main>
-                <Routes>                    
-                    <Route path='/register' element={<Register/>}/>
-                    <Route path="/*" element={<Login isloginSuccess={this.isloginSuccess}/>}/>
-                </Routes>
-                </main>
-            </div>            
+            return(   
+            <GLOBAL_VALUE.Consumer>                
+            {({theme,toogleTheme}) => 
+                (                
+                <div className="app-container" data-theme={theme}>
+                    <Header access={false} toogleTheme={toogleTheme} theme={theme} dataUser={this.state.isAuthUser}/>    
+                    <main>
+                    <Routes>                    
+                        <Route path='/register' element={<Register/>}/>
+                        <Route path="/*" element={<Login isloginSuccess={this.isloginSuccess}/>}/>
+                    </Routes>
+                    </main>
+                </div>
+                )
+            }
+            </GLOBAL_VALUE.Consumer>
             )
         }else{
             return(
-                <div className="app-container" data-theme="light">
-                    <Header access={true} dataUser={this.state.isAuthUser}/>                    
+            <GLOBAL_VALUE.Consumer>                
+            {({theme,toogleTheme}) => 
+                (    
+                <div className="app-container" data-theme={theme}>
+                    <Header access={true} toogleTheme={toogleTheme} theme={theme} logout={this.logout} dataUser={this.state.isAuthUser}/>                    
                     <Routes>                    
                         <Route path='/*' element={<NotFound/>}/>           
                         <Route path='/' element={<Dashboard/>}/>           
@@ -70,6 +80,9 @@ class App extends Component{
                         <Route path="/notes/:id" element={<DetailCard/>} />                        
                     </Routes>                
                 </div>  
+                )
+            }
+            </GLOBAL_VALUE.Consumer>
             )
         }
         
