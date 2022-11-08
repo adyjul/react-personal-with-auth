@@ -27,7 +27,8 @@ const DetailPage = ({data,changeNote,deleteNote,isLoading}) => {
 DetailPage.propTypes = {
     data : PropTypes.object.isRequired,
     changeNote : PropTypes.func.isRequired,
-    deleteNote : PropTypes.func.isRequired
+    deleteNote : PropTypes.func.isRequired,
+    isLoading : PropTypes.bool.isRequired
 }
 
 export default DetailPage;

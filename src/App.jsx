@@ -1,5 +1,5 @@
 import { Component } from "react";
-import {Header} from './component/index';
+import {Header,Loading} from './component/index';
 import { Login,NotFound,Register,Dashboard,Tambah,DetailCard } from "./pages";
 import {putAccessToken,getUserLogged,getAccessToken} from './utils/config/network'
 import { Routes, Route } from 'react-router-dom';
@@ -11,7 +11,8 @@ class App extends Component{
         super(props);
         this.state = {
             isAuthUser : null,              
-            inLogin : getAccessToken(),            
+            inLogin : getAccessToken(), 
+            isProses : true           
         }
         this.isloginSuccess = this.isloginSuccess.bind(this);
         this.logout = this.logout.bind(this);
@@ -36,7 +37,10 @@ class App extends Component{
 
     async componentDidMount(){       
         let access = getAccessToken();
-        await this.getOnUserLogged(access);                    
+        await this.getOnUserLogged(access);     
+        this.setState({
+            isProses : false
+        })               
     }
 
     async isloginSuccess({access}){                        
@@ -46,7 +50,11 @@ class App extends Component{
 
 
     render(){    
-                  
+        
+        if(this.state.isProses){
+            return <Loading/>
+        }
+
         if( this.state.isAuthUser === null ){ 
             return(   
             <GLOBAL_VALUE.Consumer>                

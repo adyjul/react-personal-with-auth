@@ -2,7 +2,7 @@ import { DetailPage } from "../../component";
 import { useNavigate, useParams } from "react-router-dom";
 import { Component } from "react";
 import {getNote,archiveNote,unarchiveNote,deleteNote} from '../../utils/config/network';
-import PropTypes from 'prop-types';
+
 
 const DetailCard = () => {
     const {id} = useParams();    

@@ -2,7 +2,7 @@ import { Component } from "react";
 import { Link } from "react-router-dom";
 import {Catatan} from "../../component/index";
 import {SearchInput} from '../../component/index'
-import { getAccessToken, getActiveNotes } from "../../utils/config/network";
+import { getActiveNotes } from "../../utils/config/network";
 
 class Dashboard extends Component{
     constructor(props){

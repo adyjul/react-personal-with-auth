@@ -15,7 +15,7 @@ const Tambah = () =>{
     async function onInputSubmitData(e){    
         e.preventDefault();
         isLoading(true);
-        let {data,error} = await addNote({
+        await addNote({
             title : judul,
             body : isi
         })

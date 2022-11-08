@@ -20,7 +20,8 @@ const Catatan = ({data,isLoading}) =>{
 }
 
 Catatan.propTypes ={
-    data : PropTypes.array
+    data : PropTypes.array.isRequired,
+    isLoading : PropTypes.bool.isRequired
 }
 
 export default Catatan;
